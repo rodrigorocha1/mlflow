@@ -17,7 +17,7 @@ model = LinearRegression()
 model.fit(X, y)
 
 y_pred = model.predict(X)
-rmse = mean_squared_error(y, y_pred, squared=False)
+rmse = mean_squared_error(y, y_pred)
 
 # ======================
 # MLflow
