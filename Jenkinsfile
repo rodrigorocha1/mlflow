@@ -2,7 +2,8 @@ pipeline {
     agent any
 
     environment {
-        MLFLOW_TRACKING_URI =  "http://172.31.0.10:5000"
+        MLFLOW_TRACKING_URI = "http://172.31.0.10:5000"
+        MLFLOW_ARTIFACT_URI = "http://172.31.0.10:5000/api/2.0/mlflow-artifacts/artifacts"
         PYTHONUNBUFFERED = "1"
         VENV = ".venv"
     }
