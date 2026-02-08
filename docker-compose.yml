@@ -1,0 +1,50 @@
+
+
+name: mlops-local
+
+networks:
+  mlops_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.31.0.0/24
+          gateway: 172.31.0.1
+
+volumes:
+  jenkins_home:
+  mlflow_data:
+
+services:
+
+  mlflow:
+    image: ghcr.io/mlflow/mlflow
+    container_name: mlflow
+    restart: unless-stopped
+    ports:
+      - "5000:5000"        # Exposto só para estudo
+    volumes:
+      - mlflow_data:/mlruns
+    command: >
+      mlflow server
+      --backend-store-uri sqlite:///mlruns/mlflow.db
+      --default-artifact-root /mlruns
+      --host 0.0.0.0
+    networks:
+      mlops_net:
+        ipv4_address: 172.31.0.10
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  jenkins:
+    build: ./jenkins
+    container_name: jenkins
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./jenkins_home:/var/jenkins_home
+    networks:
+      mlops_net:
+        ipv4_address: 172.31.0.20
