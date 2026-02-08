@@ -23,7 +23,7 @@ services:
     ports:
       - "5000:5000"        # Exposto só para estudo
     volumes:
-      - mlflow_data:/mlruns
+      - ./mlflow_data:/mlruns
     environment:
       - MLFLOW_DISABLE_HOST_CHECK=true
     command: >
